@@ -15,10 +15,48 @@ from os import environ
 import pinocchio as se3
 from pinocchio.utils import zero
 from pinocchio.robot_wrapper import RobotWrapper
-from robot_properties_solo.resources import Resources
+# from robot_properties_solo.resources import Resources
+
+from pathlib import Path
+
+
+class Resources(object):
+    def __init__(self, robot_name, robot_family="solo") -> None:
+        super().__init__()
+
+        self.package_path = str(Path(__file__).resolve().parent.absolute())
+
+        self.robot_name = str(robot_name)
+        self.robot_family = str(robot_family)
+
+        self.resources_dir = Path(self.package_path) / "resources"
+
+        self.dgm_yaml_path = str(
+            self.resources_dir
+            / "dynamic_graph_manager"
+            / ("dgm_parameters_" + self.robot_name + ".yaml")
+        )
+
+        self.urdf_path = str(
+            self.resources_dir / "urdf" / (self.robot_name + ".urdf")
+        )
+        self.srdf_path = str(
+            self.resources_dir / "srdf" / (self.robot_family + ".srdf")
+        )
+        self.meshes_path = str(Path(self.package_path).parent)
+
+        self.imp_ctrl_yaml_path = str(
+            self.resources_dir / "impedance_ctrl.yaml"
+        )
+
+        self.resources_dir = str(self.resources_dir)
+
+
+
+
 
 class SoloAbstract(object):
-    """ Abstract class used for all Solo robots. """
+    # Abstract class used for all Solo robots. 
 
     # PID gains
     kp = 5.0
@@ -70,6 +108,7 @@ class SoloAbstract(object):
         return joint_names
 
 
+'''
 class Solo8Config(SoloAbstract):
     robot_family = "solo"
     robot_name = "solo8"
@@ -138,7 +177,7 @@ class Solo8Config(SoloAbstract):
 
 
 class Solo8ConfigDeprecationHelper(object):
-    """ Class to deprecate the Quadruped12Robot preserving inheritance. """
+    # Class to deprecate the Quadruped12Robot preserving inheritance. 
 
     def __init__(self, new_target):
         self.new_target = new_target
@@ -161,7 +200,7 @@ class Solo8ConfigDeprecationHelper(object):
 
 
 SoloConfig = Solo8ConfigDeprecationHelper(Solo8Config)
-
+'''
 
 class Solo12Config(SoloAbstract):
     robot_family = "solo"
